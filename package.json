@@ -1,0 +1,15 @@
+{
+  "name": "njs-script",
+  "version": "1.0.0",
+  "descrp": "",
+  "main": "index.js",
+  "script": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "tp": "./main.js"
+  },
+  "dependencies": {
+    "commander": "^2.19.0"
+  }
+}
