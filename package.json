@@ -2,14 +2,19 @@
   "name": "njs-script",
   "version": "1.0.0",
   "descrp": "",
-  "main": "index.js",
+  "main": "main.js",
   "script": {
-    "start": "node index.js"
+    "start": "node main.js"
   },
   "bin": {
     "tp": "./main.js"
   },
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "fs": "0.0.1-security",
+    "inquirer": "^6.2.0",
+    "randomint": "^1.0.0",
+    "sleep": "^5.2.3",
+    "sqlite": "^3.0.0"
   }
 }

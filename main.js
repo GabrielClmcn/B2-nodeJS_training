@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 const Sqlite = require ('./db.js')
-const softChooser = require ('./chooseSoft.js')
+const softChooser = require ('./softChooser.js')
 const softOne = require ('./soft.js')
-const softTwo = require ('./bonus.js')
+// const softTwo = require ('./bonus.js')
 
-const db = New Sqlite()
-const choose = New softChooser()
-const firstSoft = New softOne()
-const secondSoft = New softTwo()
+const db = new Sqlite()
+const choose = new softChooser()
+const firstSoft = new softOne()
+// const secondSoft = new softTwo()
 
-
-choose.main()
+db.db()
+// choose.main()
+firstSoft.game()
