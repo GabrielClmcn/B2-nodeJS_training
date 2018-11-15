@@ -6,9 +6,8 @@ const softOne = require ('./soft.js')
 
 const db = new Sqlite()
 const choose = new softChooser()
-const firstSoft = new softOne()
+// const firstSoft = new softOne()
 // const secondSoft = new softTwo()
 
-db.db()
-// choose.main()
-firstSoft.game()
+//db.db()
+choose.main()

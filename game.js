@@ -5,6 +5,7 @@ const inquirer = require ('inquirer')
 const sleep = require ('sleep')
 const rdint = require ('randomint')
 const fs = require ('fs')
+const async = require ('async')
 
 class game
 {
@@ -17,6 +18,7 @@ class game
         this.sleep = sleep
         this.rdint = rdint
         this.fs = fs
+        this.async = async
     }    
 }
 

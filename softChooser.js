@@ -1,94 +1,77 @@
-const softOne = require ('./soft.js')
-const softTwo = require ('./bonus.js')
-const game = require ('./game.js')
-const globalLol = game && softOne && softTwo
+const softOne = require('./soft.js')
+const game = require('./game.js')
 
-class Choose extends globalLol{
-    constructor(chooser, db, commander, inquirer, sleep)
-    {
+class Choose extends game {
+    constructor(chooser, db, commander, inquirer, sleep) {
         super(chooser, db, commander, inquirer, sleep)
     }
 
-    main()
-    {
-       
-        const mOrL = 'More or Less\n'
-        const soft2 = 'Bonus : Soft 2\n'
-        const q = 'Exit' + process.exit(0)
+    main() {
+        const firstSoft = new softOne()
 
-        commander
-        .version('1.0.0')
-        .option('-h, --help', '')
-        .option('-s, --save', save())
-       
-        inquirer.prompt([
+        this.commander
+            .version('1.0.0')
+            .option('-h, --help', 'choose a game')
+            .parse(process.argv)
+
+        this.inquirer.prompt([
             {
-                type: 'checkbox',
+                type: 'list',
                 message: 'What you want to do ?',
                 name: 'softChoice',
                 choices: [
-                mOrL,
-                soft2,
-                save,
-                q
-            ]}
+                    'More or Less',
+                    'Save',
+                    'Exit the soft'
+                ]
+            }
         ]).then((answers) => {
-            console.log(answers)
-            if (answers == softOne.game())
-            {
-                console.log('You will play More or Less game.')
-                sleep.sleep(5)
+            // console.log(answers)
+            if (answers.softChoice === 'More or Less') {
+                console.log('\nYou will play More or Less game.')
+                // this.sleep.sleep(3)
+                firstSoft.game()
             }
-
-            else if (answers == soft2)
-            {
-                console.log('you choose the bonus !')
-                sleep.sleep(5)
+            else if (answers.softChoice === 'Save') {
+                console.log('Launching the save process')
+                save()
             }
-            else
+            else (answers.softChoice === 'Exit the soft')
             {
                 console.log('Good bye')
-                sleep.sleep(5)
+                this.sleep.sleep(2)
+                exit(0)
             }
         })
     }
 
-    save()
-    {
-        inquirer.prompt([
+    save() {
+
+        this.inquirer.prompt([
             {
                 type: 'checkbox',
-                message: 'What you want to do ?',
-                name: 'Save to db',
+                message: 'Save to the db ?',
+                name: 'save_to_db',
                 choices: [
-                s1 = softOne.save(),
-                s2 = softTwo.save(),
-                q
-            ]}
+                    s1 = 'Save More or Less',
+                    'Exit the soft'
+                ]
+            }
         ]).then((answers) => {
-            if (answers == s1)
-            {
-                if ("tmp/save_mol")
-                {
+            if (answers.save_to_db == s1) {
+                if ("tmp/save_mol") {
                     this.db.run("INSERT INTO MoreLess")
-                    console.log('Check your db.')
+                    console.log.this.db.run('SELECT * FROM MoreLess')
                 }
-                else
-                {
+                else {
                     console.log('The save dosn\'t exist. please restart a game, play it and press -s')
                 }
             }
-            else (answers == s2)
+            else (answers.save_to_db === 'Exit the soft')
             {
-                if ("tmp/save_b")
-                {
-                    this.db.run("INSERT INTO Bonus")
-                    console.log('Check your db.')
-                }
-                else
-                {
-                    console.log('The save dosn\'t exist. please restart a game, play it and press -s')
-                }
+                console.log('Good bye')
+                this.sleep.sleep(5)
+                Process.exit(0)
             }
         })
     }
