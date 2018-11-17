@@ -1,8 +1,8 @@
 const game = require('./game.js')
 
 class moreOrLess extends game {
-    constructor(chooser, db, commander, inquirer, sleep, fs, async) {
-        super(chooser, db, commander, inquirer, sleep, fs, async)
+    constructor(chooser, db, commander, inquirer, fs, async) {
+        super(chooser, db, commander, inquirer, fs, async)
     }
 
     game() {
@@ -11,44 +11,48 @@ class moreOrLess extends game {
         const nbToFind = Math.round(Math.random * (1 - 100) + 1)
         var count = 0
         var nb = 0
+        let i = 0
+        let nom = "nom"+i
 
         this.commander
             .version('1.0.0')
-            .option('-h, --help', 'You only just need to find a number between 1 and 100. Just type a number and enter.\n -s, --save create a file log, do it at the end of the game.')
+            .option('-c, --caca', 'You only just need to find a number between 1 and 100. Just type a number and enter.\n -s, --save create a file log, do it at the end of the game.')
             .parse(process.argv)
 
-        if (this.commander.help) {
+        if (this.commander.caca) {
             console.log('You only just need to find a number between 1 and 100. Just type a number and enter.\n-s, --save create a file log, do it at the end of the game.')
         }
         else {
             count++
 
-            const funct = () => {
-                const a = 
+            const funct = (name) => {
+                const a =
                 [{
                  type:'input',
-                 msg:'Enter a number',
-                 name: 'test1'
+                 message:'Enter a number',
+                 name: name
                 }]
-                this.inquirer.prompt(a)
+                return this.inquirer.prompt(a)
             }
 
-            async
+          const quizz = async () => {
+            // const answers = await funct()
+            let answers = await funct(nom)
 
-            if (nb > nbToFind) {
-                console.log('Too big, enter a smaller number : ')
-            }
+              while (answers[nom] != nbToFind){
+            if (answers[nom] > nbToFind) {
+                console.log('Too big, enter a smaller number than : '+answers[nom])
+                i++
+                  let answers = await funct(nom)
 
-            else if (nb < nbToFind) {
-                console.log('Too small, to enter a larger number : ')
-            }
-
-            else {
-                if (nb == nbToFind) {
+            }else if (answers[nom] < nbToFind) {
+              i++
+                console.log('Too small, enter a larger number than : '+answers[nom])
+                  let answers = await funct(nom)
+            }else if (answers[nom] == nbToFind) {
                     if (count == 1) {
                         console.log('Congratulations you have find in ' + count + ' shot.')
-                    }
-                    else {
+                    }else {
                         console.log('Congratulations you have find in ' + count + ' shots.')
                     }
 
@@ -71,8 +75,13 @@ class moreOrLess extends game {
                 // else {
                 //     console.log('Their is no file for more or less game.')
                 // }
-            }
+
+          }
+          console.log("ASSSS");
         }
+        quizz()
+      }
+
     }
 }
 
