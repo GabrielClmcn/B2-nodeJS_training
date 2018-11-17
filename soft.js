@@ -77,9 +77,9 @@ class moreOrLess extends game {
                 // }
 
           }
-          console.log("ASSSS");
+          console.log("log");
         }
-        quizz()
+	quizz()
       }
 
     }
