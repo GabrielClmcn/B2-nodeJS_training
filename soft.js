@@ -21,7 +21,7 @@ class moreOrLess extends game
 
         this.commander
             .version('1.0.0')
-            .option('-r, --rules', 'You only just need to find a number between 1 and 100. Just type a number and enter.\n -s, --save create a file log, do it at the end of the game.')
+            .option('-r, --rules', 'You only just need to find a number between 1 and 100. Just type a number and enter.')
             .parse(process.argv)
 
         if (this.commander.r)
