@@ -3,9 +3,9 @@ const game = require('./game.js')
 
 class Choose extends game
 {
-    constructor(chooser, db, commander, inquirer)
+    constructor(chooser, sqlite, commander, inquirer)
     {
-        super(chooser, db, commander, inquirer)
+        super(chooser, sqlite, commander, inquirer)
     }
 
     main()
@@ -14,8 +14,36 @@ class Choose extends game
 
         this.commander
             .version('1.0.0')
-            .option('-a, --aaaa', 'choose a game')
+            .option('-s, --save', 'Save the more or less game')
             .parse(process.argv)
+
+            if (this.commander.save)
+            {
+                // console.log('a')
+                function db()
+                {
+                    this.sqlite.open('TP_nodeJS').then((base) =>
+                    {
+                        base.run("CREATE TABLE MoreLess (id INT, nbF INT, count INT")
+                        base.run('INSERT into Moreless WHERE id VALUES (5)')
+                        base.run("SELECT id FROM Moreless").then((rows) =>
+                        {
+                            rows.forEach((row) =>
+                            {
+                                console.log('row')
+                            })
+                        })
+                    })
+
+                    .catch((err) =>
+                    {
+                        console.log(err)
+                    })
+                    this.sqlite.close();
+                }
+                db()
+            }
+
 
         this.inquirer.prompt([
             {
@@ -24,62 +52,19 @@ class Choose extends game
                 name: 'softChoice',
                 choices: [
                     'More or Less',
-                    'Save',
                     'Exit the soft'
                 ]
             }
         ]).then((answers) => {
             if (answers.softChoice === 'More or Less') {
                 console.log('\nYou will play More or Less game.')
-                // this.sleep.sleep(3)
+                this.sleep.sleep(3)
                 firstSoft.game()
-            }
-            else if (answers.softChoice === 'Save') {
-                console.log('Launching the save process')
-                // this.sleep.sleep(3)
-                this.save()
             }
             else if (answers.softChoice === 'Exit the soft')
             {
                 console.log('Good bye')
-                // this.sleep.sleep(2)
-                process.exit(0)
-            }
-        })
-    }
-
-    save()
-    {
-        this.inquirer.prompt([
-        {
-            type: 'list',
-            message: 'Save to the db ?',
-            name: 'save_to_db',
-            choices: [
-                'Save More or Less',
-                'Exit the soft'
-                ]
-        }
-
-        ]).then((answers) =>
-        {
-            if (answers.save_to_db === 'Save More or Less')
-            {
-                if ("tmp/save_mol") {
-                    this.db.run("INSERT INTO MoreLess")
-                    this.db.run('SELECT * FROM MoreLess')
-                }
-
-                else
-                {
-                    console.log('The save dosn\'t exist, please start or restart a game.')
-                }
-            }
-
-            else if (answers.save_to_db === 'Exit the soft')
-            {
-                console.log('Good bye')
-                // this.sleep.sleep(5)
+                this.sleep.sleep(2)
                 process.exit(0)
             }
         })

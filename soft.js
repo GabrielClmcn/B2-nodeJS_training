@@ -1,10 +1,12 @@
 const game = require('./game.js')
+const fs = require('fs')
+const commander = require('commander')
 
 class moreOrLess extends game
 {
-    constructor(chooser, db, commander, inquirer, fs, async)
+    constructor(chooser, commander, inquirer, fs, async)
     {
-        super(chooser, db, commander, inquirer, fs, async)
+        super(chooser, commander, inquirer, fs, async)
     }
 
     game()
@@ -19,19 +21,16 @@ class moreOrLess extends game
 
         this.commander
             .version('1.0.0')
-            .option('-h, --help', 'You only just need to find a number between 1 and 100. Just type a number and enter.\n -s, --save create a file log, do it at the end of the game.')
-            .option('-s, --save', 'Saving')
+            .option('-r, --rules', 'You only just need to find a number between 1 and 100. Just type a number and enter.\n -s, --save create a file log, do it at the end of the game.')
             .parse(process.argv)
 
-        if (this.commander.toto)
+        if (this.commander.r)
         {
             console.log('You only just need to find a number between 1 and 100. Just type a number and enter.\n-s, --save create a file log, do it at the end of the game.')
         }
 
         else
         {
-            console.log(nbToFind)
-
             const funct = (name) =>
             {
                 const a =
@@ -46,6 +45,7 @@ class moreOrLess extends game
             const quizz = async () =>
             {
                 let answers = await funct(nom)
+
                 count++
 
                 if (answers[nom] > nbToFind)
@@ -64,34 +64,34 @@ class moreOrLess extends game
                 {
                     if (count == 1)
                     {
-                        console.log('Congratulations you find it in ' + count + ' shot.')
+                        console.log('Congratulations you find it in ' + count + ' shot. A new file is created.')
                     }
                 
                     else
                     {
-                        console.log('Congratulations you find it in ' + count + ' shots.')
+                        console.log('Congratulations you find it in ' + count + ' shots. A new file is created.')
                     }
-                }
-            }
-            
-            save()
-            {
-                let path = "save_mol.txt"
-                let message = "This is the local save for the more or less game.\n number to find : " + nbToFind + "\n count : " + count
-                let eMessage = "An error was occured. The file can\'t be save. please verify the disk space or the rules." 
 
-                this.fs.writeFile(path, message), (err) =>
-                {
-                    if (err){
-                        console.log(eMessage)
-                    }
-                    else
+                    function save()
                     {
-                        console.log('The file is save, you can now send it to the db.')
-                        // sleep.sleep(5)
+                        let path = "save_mol.txt"
+                        let message = "This is the local save for the more or less game.\nnumber to find : " + nbToFind + "\ncount : " + count
+                        let eMessage = "An error was occured (how did you get this message ???)." 
+            
+                        fs.writeFile(path, message), (err) =>
+                        {
+                            if (err)
+                            {
+                                console.log(eMessage)
+                            }
+                            else
+                            {
+                                console.log('The file is save, you can now send it to the db.')
+                            }
+                        }
                     }
+                    save()
                 }
-
             }
 	        quizz()
         }
